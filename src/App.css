@@ -130,7 +130,6 @@ textarea {
 /* Preview */
 .app-main-note-preview {
   border-top: 1px solid #ddd;
-  overflow-y: scroll;
   background: rgba(0, 0, 0, 0.02);
 }
 
@@ -148,4 +147,8 @@ textarea {
 .box {
   background: #f0f0f0;
   border: 1px solid #ddd;
+}
+
+.code-container {
+  overflow-y: auto;
 }
