@@ -20,6 +20,7 @@ function App() {
       title: "Untitled Note",
       body: "",
       lastModified: Date.now(),
+      images: [], // Initialize images array
     };
 
     setNotes([newNote, ...notes]);
@@ -33,9 +34,11 @@ function App() {
   const onUpdateNote = (updatedNote) => {
     const updatedNotesArr = notes.map((note) => {
       if (note.id === updatedNote.id) {
-        return updatedNote;
+        return {
+          ...updatedNote,
+          images: updatedNote.images || [], // Add images array if it doesn't exist
+        };
       }
-
       return note;
     });
 
