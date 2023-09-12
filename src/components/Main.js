@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import CodeBlock from "./CodeBlock"; // Make sure to import your CodeBlock component
+import YouTubeBlock from "./YoutubeBlock";
 
 const Main = ({ activeNote, onUpdateNote }) => {
   const [localImages, setLocalImages] = useState([]);
@@ -65,28 +66,49 @@ const Main = ({ activeNote, onUpdateNote }) => {
     if (!activeNote)
       return <div className="no-active-note">No Active Note</div>;
 
-    const contentParts = activeNote.body.split(
-      /\[CODE_BLOCK\]([\s\S]*?)\[\/CODE_BLOCK\]/g
-    );
-    return contentParts.map((part, index) => {
-      if (index % 2 === 0) {
-        return (
-          <ReactMarkdown className="markdown-preview">{part}</ReactMarkdown>
+    // Matches YouTube and code blocks to break down activeNote.body into segments
+    const allRegEx =
+      /\[CODE_BLOCK\]\[HTML\]([\s\S]*?)\[CSS\]([\s\S]*?)\[JS\]([\s\S]*?)\[\/CODE_BLOCK\]|\[YOUTUBE\s*=\s*(.*?)\]/g;
+    let match;
+    let lastIndex = 0;
+    const parts = [];
+
+    while ((match = allRegEx.exec(activeNote.body)) !== null) {
+      parts.push(activeNote.body.substring(lastIndex, match.index));
+
+      // If it's a code block
+      if (match[1]) {
+        parts.push(
+          <CodeBlock
+            htmlCode={match[1].trim()}
+            cssCode={match[2].trim()}
+            jsCode={match[3].trim()}
+          />
         );
-      } else {
-        const codeMatch = part.match(
-          /\[HTML\]([\s\S]*?)\[CSS\]([\s\S]*?)\[JS\]([\s\S]*)/
-        );
-        if (codeMatch) {
-          const htmlCode = codeMatch[1].trim();
-          const cssCode = codeMatch[2].trim();
-          const jsCode = codeMatch[3].trim();
-          return (
-            <CodeBlock htmlCode={htmlCode} cssCode={cssCode} jsCode={jsCode} />
-          );
-        }
       }
-    });
+      // If it's a YouTube block
+      else if (match[4]) {
+        parts.push(<YouTubeBlock videoUrl={match[4]} />);
+      }
+
+      lastIndex = match.index + match[0].length;
+    }
+
+    // Append the last chunk of plain text
+    parts.push(activeNote.body.substring(lastIndex));
+
+    return (
+      <div className="scrollable-container">
+        {parts.map((part, index) => {
+          if (typeof part === "string") {
+            return (
+              <ReactMarkdown className="markdown-preview">{part}</ReactMarkdown>
+            );
+          }
+          return part;
+        })}
+      </div>
+    );
   };
 
   return (
