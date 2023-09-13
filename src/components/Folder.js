@@ -19,12 +19,16 @@ class Folder extends React.Component {
     this.setState(prevState => ({
       notes: [newNote, ...prevState.notes],
     }));
+    // Add logic to handle the addition of the new note to the parent component
+    this.props.onAddNote(newNote);
   };
 
   removeNote = (noteId) => {
     this.setState(prevState => ({
       notes: prevState.notes.filter(note => note.id !== noteId),
     }));
+    // Add logic to handle the removal of the note from the parent component
+    this.props.onRemoveNote(noteId);
   };
 
   render() {
