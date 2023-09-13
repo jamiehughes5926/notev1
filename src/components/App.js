@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import uuid from "react-uuid";
 import "./App.css";
 import Main from "./components/Main";
@@ -5,7 +6,7 @@ import Sidebar from "./components/Sidebar";
 
 function App() {
   const [notes, setNotes] = useState(
-    localStorage.notes ? JSON.parse(localStorage.notes) : []
+    localStorage.notes ? JSON.parse(localStorage.notes) : [],
   );
   const [folders, setFolders] = useState([]);
   const [activeNote, setActiveNote] = useState(false);
@@ -24,11 +25,13 @@ function App() {
     };
 
     if (folderId) {
-      setFolders(folders.map(folder => 
-        folder.id === folderId 
-          ? {...folder, notes: [newNote, ...folder.notes]} 
-          : folder
-      ));
+      setFolders(
+        folders.map((folder) =>
+          folder.id === folderId
+            ? { ...folder, notes: [newNote, ...folder.notes] }
+            : folder,
+        ),
+      );
     } else {
       setNotes([newNote, ...notes]);
     }
