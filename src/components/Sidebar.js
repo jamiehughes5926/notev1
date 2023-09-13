@@ -39,52 +39,58 @@ const Sidebar = ({
     <div className={`app-sidebar ${isHalfSize ? "half" : ""}`}>
       <div className="app-sidebar-header">
         <h1>{isChatMode ? "Chats" : "Notes"}</h1>
-        <button onClick={isChatMode ? onAddChat : onAddNote}>{isChatMode ? "Add Chat" : "Add Note"}</button>
-        <button onClick={() => setIsChatMode(!isChatMode)}>{isChatMode ? "Switch to Note Mode" : "Switch to Chat Mode"}</button>
+        <button onClick={isChatMode ? onAddChat : onAddNote}>
+          {isChatMode ? "Add Chat" : "Add Note"}
+        </button>
+        <button onClick={() => setIsChatMode(!isChatMode)}>
+          {isChatMode ? "Switch to Note Mode" : "Switch to Chat Mode"}
+        </button>
         <button id="toggleSidebar" onClick={toggleSidebarSize}>
           Toggle Sidebar
         </button>
       </div>
       <div className="app-sidebar-notes">
-        {isChatMode ? sortedChats.map(({ id, title, body, lastModified }, i) => (
-          <div
-            className={`app-sidebar-note ${id === activeChat && "active"}`}
-            onClick={() => setActiveChat(id)}
-            key={id}
-          >
-            <div className="sidebar-note-title">
-              <strong>{title}</strong>
-              <button onClick={(e) => onDeleteChat(id)}>Delete</button>
-            </div>
-            <p>{body && body.substr(0, 100) + "..."}</p>
-            <small className="note-meta">
-              Last Modified{" "}
-              {new Date(lastModified).toLocaleDateString("en-NZ", {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </small>
-          </div>
-        )) : sortedNotes.map(({ id, title, body, lastModified }, i) => (
-          <div
-            className={`app-sidebar-note ${id === activeNote && "active"}`}
-            onClick={() => setActiveNote(id)}
-            key={id}
-          >
-            <div className="sidebar-note-title">
-              <strong>{title}</strong>
-              <button onClick={(e) => onDeleteNote(id)}>Delete</button>
-            </div>
-            <p>{body && body.substr(0, 100) + "..."}</p>
-            <small className="note-meta">
-              Last Modified{" "}
-              {new Date(lastModified).toLocaleDateString("en-NZ", {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </small>
-          </div>
-        ))}
+        {isChatMode
+          ? sortedChats.map(({ id, title, body, lastModified }, i) => (
+              <div
+                className={`app-sidebar-note ${id === activeChat && "active"}`}
+                onClick={() => setActiveChat(id)}
+                key={id}
+              >
+                <div className="sidebar-note-title">
+                  <strong>{title}</strong>
+                  <button onClick={(e) => onDeleteChat(id)}>Delete</button>
+                </div>
+                <p>{body && body.substr(0, 100) + "..."}</p>
+                <small className="note-meta">
+                  Last Modified{" "}
+                  {new Date(lastModified).toLocaleDateString("en-NZ", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </small>
+              </div>
+            ))
+          : sortedNotes.map(({ id, title, body, lastModified }, i) => (
+              <div
+                className={`app-sidebar-note ${id === activeNote && "active"}`}
+                onClick={() => setActiveNote(id)}
+                key={id}
+              >
+                <div className="sidebar-note-title">
+                  <strong>{title}</strong>
+                  <button onClick={(e) => onDeleteNote(id)}>Delete</button>
+                </div>
+                <p>{body && body.substr(0, 100) + "..."}</p>
+                <small className="note-meta">
+                  Last Modified{" "}
+                  {new Date(lastModified).toLocaleDateString("en-NZ", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </small>
+              </div>
+            ))}
       </div>
       {isHalfSize && (
         <div className="chatbot-placeholder">
