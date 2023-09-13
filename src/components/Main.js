@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 import CodeBlock from "./CodeBlock"; // Make sure to import your CodeBlock component
 import YouTubeBlock from "./YoutubeBlock";
 
-const Main = ({ activeNote, onUpdateNote }) => {
+const Main = ({ activeNote, onUpdateNote, folders, currentFolderId, getActiveNote, Note }) => {
   const [localImages, setLocalImages] = useState([]);
   const [view, setView] = useState("edit");
 
@@ -77,7 +77,24 @@ const Main = ({ activeNote, onUpdateNote }) => {
       );
     }
 
-    <Main activeNote={getActiveNote()} onUpdateNote={onUpdateNote} folders={folders} currentFolderId={currentFolderId} />
+    {view === "edit" && (
+      <div className="app-main-note-edit">
+        <input
+          type="text"
+          id="title"
+          placeholder="Note Title"
+          value={activeNote?.title || ""}
+          onChange={(e) => onEditField("title", e.target.value)}
+          autoFocus
+        />
+        <textarea
+          id="body"
+          placeholder="Write your note here..."
+          value={activeNote?.body || ""}
+          onChange={(e) => onEditField("body", e.target.value)}
+        />
+      </div>
+    )}
     const allRegEx =
       /\[CODE_BLOCK\]\[HTML\]([\s\S]*?)\[CSS\]([\s\S]*?)\[JS\]([\s\S]*?)\[\/CODE_BLOCK\]|\[YOUTUBE\s*=\s*(.*?)\]/g;
     let match;
