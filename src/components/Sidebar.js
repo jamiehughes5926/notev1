@@ -6,6 +6,7 @@ const Sidebar = ({
   onDeleteNote,
   activeNote,
   setActiveNote,
+  onAddFolder,
 }) => {
   const [isHalfSize, setIsHalfSize] = useState(false); // Local state to control the size
   const [apiKey, setApiKey] = useState(""); // Local state to store API Key
@@ -38,7 +39,8 @@ const Sidebar = ({
     <div className={`app-sidebar ${isHalfSize ? "half" : ""}`}>
       <div className="app-sidebar-header">
         <h1>Notes</h1>
-        <button onClick={onAddNote}>Add</button>
+        <button onClick={onAddNote}>Add Note</button>
+        <button onClick={onAddFolder}>Add Folder</button>
         <button id="toggleSidebar" onClick={toggleSidebarSize}>
           Toggle Sidebar
         </button>
