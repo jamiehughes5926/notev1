@@ -6,11 +6,16 @@ import Sidebar from "./components/Sidebar";
 
 function App() {
   const [notes, setNotes] = useState(
-    localStorage.notes ? JSON.parse(localStorage.notes) : []
+    localStorage.notes ? JSON.parse(localStorage.notes) : [],
   );
-  const [folders, setFolders] = useState(
-    localStorage.folders ? JSON.parse(localStorage.folders) : []
-  );
+  const [folders, setFolders] = useState([]);
+
+  useEffect(() => {
+    const storedFolders = localStorage.getItem("folders");
+    if (storedFolders) {
+      setFolders(JSON.parse(storedFolders));
+    }
+  }, []);
   const [activeNote, setActiveNote] = useState(false);
 
   useEffect(() => {
@@ -44,18 +49,19 @@ function App() {
       }
       return note;
     });
-  
+
     setNotes(updatedNotesArr);
   };
-  
+
   const onAddFolder = () => {
     const newFolder = {
       id: uuid(),
       name: "Untitled Folder",
       notes: [],
     };
-  
+
     setFolders([newFolder, ...folders]);
+    localStorage.setItem("folders", JSON.stringify([newFolder, ...folders]));
   };
 
   const getActiveNote = () => {
