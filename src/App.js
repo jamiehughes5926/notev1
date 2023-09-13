@@ -8,6 +8,9 @@ function App() {
   const [notes, setNotes] = useState(
     localStorage.notes ? JSON.parse(localStorage.notes) : []
   );
+  const [folders, setFolders] = useState(
+    localStorage.folders ? JSON.parse(localStorage.folders) : []
+  );
   const [activeNote, setActiveNote] = useState(false);
 
   useEffect(() => {
@@ -41,8 +44,18 @@ function App() {
       }
       return note;
     });
-
+  
     setNotes(updatedNotesArr);
+  };
+  
+  const onAddFolder = () => {
+    const newFolder = {
+      id: uuid(),
+      name: "Untitled Folder",
+      notes: [],
+    };
+  
+    setFolders([newFolder, ...folders]);
   };
 
   const getActiveNote = () => {
@@ -57,6 +70,7 @@ function App() {
         onDeleteNote={onDeleteNote}
         activeNote={activeNote}
         setActiveNote={setActiveNote}
+        onAddFolder={onAddFolder}
       />
       <Main activeNote={getActiveNote()} onUpdateNote={onUpdateNote} />
     </div>
