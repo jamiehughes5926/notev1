@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 import CodeBlock from "./CodeBlock"; // Make sure to import your CodeBlock component
 import YouTubeBlock from "./YoutubeBlock";
 
-const Main = ({ activeNote, activeFolder, onUpdateNote }) => {
+const Main = ({ activeNote, folder, onUpdateNote }) => {
   const [localImages, setLocalImages] = useState([]);
   const [view, setView] = useState("edit");
   const [activeFolder, setActiveFolder] = useState(null);
@@ -38,12 +38,10 @@ const Main = ({ activeNote, activeFolder, onUpdateNote }) => {
     return () => {
       window.removeEventListener("paste", handlePaste);
     };
-  }, [activeNote, localImages, onUpdateNote]);
-
-  let htmlCode = "";
-  let cssCode = "";
-  let jsCode = "";
-
+  const Main = ({ activeNote, folder, onUpdateNote }) => {
+    // existing code...
+    const [localImages, setLocalImages] = useState([]);
+    const [view, setView] = useState("edit");
   if (activeNote) {
     const codeMatch = activeNote.body.match(
       /\[CODE_BLOCK\]\[HTML\]([\s\S]*?)\[CSS\]([\s\S]*?)\[JS\]([\s\S]*?)\[\/CODE_BLOCK\]/
