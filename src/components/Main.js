@@ -3,9 +3,10 @@ import ReactMarkdown from "react-markdown";
 import CodeBlock from "./CodeBlock"; // Make sure to import your CodeBlock component
 import YouTubeBlock from "./YoutubeBlock";
 
-const Main = ({ activeNote, onUpdateNote }) => {
+const Main = ({ activeNote, activeFolder, onUpdateNote }) => {
   const [localImages, setLocalImages] = useState([]);
   const [view, setView] = useState("edit");
+  const [activeFolder, setActiveFolder] = useState(null);
 
   useEffect(() => {
     const handlePaste = (e) => {
@@ -63,8 +64,13 @@ const Main = ({ activeNote, onUpdateNote }) => {
   };
 
   const renderContent = () => {
-    if (!activeNote)
+    if (activeFolder) {
+      return <Folder folder={activeFolder} setActiveNote={setActiveNote} />;
+    } else if (activeNote) {
+      // existing code...
+    } else {
       return <div className="no-active-note">No Active Note</div>;
+    }
 
     // Matches YouTube and code blocks to break down activeNote.body into segments
     const allRegEx =
@@ -130,15 +136,6 @@ const Main = ({ activeNote, onUpdateNote }) => {
           <textarea
             id="body"
             placeholder="Write your note here..."
-            value={activeNote?.body || ""}
-            onChange={(e) => onEditField("body", e.target.value)}
-          />
-        </div>
-      )}
-
-      {view === "preview" && renderContent()}
-    </div>
-  );
-};
-
-export default Main;
+            const Main = ({ activeNote, activeFolder, setActiveFolder, onUpdateNote }) => {
+              const [localImages, setLocalImages] = useState([]);
+              const [view, setView] = useState("edit");
