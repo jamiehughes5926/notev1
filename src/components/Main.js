@@ -65,8 +65,19 @@ const Main = ({ activeNote, onUpdateNote }) => {
   const renderContent = () => {
     if (!activeNote)
       return <div className="no-active-note">No Active Note</div>;
+    
+    if (currentFolderId) {
+      const folderNotes = notes.filter(note => note.folderId === currentFolderId);
+      return (
+        <div className="folder-notes">
+          {folderNotes.map(note => (
+            <Note note={note} key={note.id} />
+          ))}
+        </div>
+      );
+    }
 
-    // Matches YouTube and code blocks to break down activeNote.body into segments
+    <Main activeNote={getActiveNote()} onUpdateNote={onUpdateNote} folders={folders} currentFolderId={currentFolderId} />
     const allRegEx =
       /\[CODE_BLOCK\]\[HTML\]([\s\S]*?)\[CSS\]([\s\S]*?)\[JS\]([\s\S]*?)\[\/CODE_BLOCK\]|\[YOUTUBE\s*=\s*(.*?)\]/g;
     let match;
