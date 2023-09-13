@@ -9,23 +9,25 @@ function App() {
     localStorage.notes ? JSON.parse(localStorage.notes) : []
   );
   const [activeNote, setActiveNote] = useState(false);
+  const [currentFolderId, setCurrentFolderId] = useState(null);
 
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
 
   const onAddNote = () => {
-    const newNote = {
-      id: uuid(),
-      title: "Untitled Note",
-      body: "",
-      lastModified: Date.now(),
-      images: [], // Initialize images array
+      const newNote = {
+        id: uuid(),
+        title: "Untitled Note",
+        body: "",
+        lastModified: Date.now(),
+        images: [], // Initialize images array
+        folderId: currentFolderId, // Add current folder ID
+      };
+  
+      setNotes([newNote, ...notes]);
+      setActiveNote(newNote.id);
     };
-
-    setNotes([newNote, ...notes]);
-    setActiveNote(newNote.id);
-  };
 
   const onDeleteNote = (noteId) => {
     setNotes(notes.filter(({ id }) => id !== noteId));
