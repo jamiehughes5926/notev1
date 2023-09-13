@@ -9,22 +9,35 @@ function App() {
     localStorage.notes ? JSON.parse(localStorage.notes) : []
   );
   const [activeNote, setActiveNote] = useState(false);
+  const [isChatMode, setIsChatMode] = useState(false); // State variable to control whether the user is in chat mode or note mode
 
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
 
   const onAddNote = () => {
-    const newNote = {
-      id: uuid(),
-      title: "Untitled Note",
-      body: "",
-      lastModified: Date.now(),
-      images: [], // Initialize images array
-    };
-
-    setNotes([newNote, ...notes]);
-    setActiveNote(newNote.id);
+    if (isChatMode) {
+      const newChat = {
+        id: uuid(),
+        title: "Untitled Chat",
+        body: "",
+        lastModified: Date.now(),
+      };
+  
+      setChats([newChat, ...chats]);
+      setActiveChat(newChat.id);
+    } else {
+      const newNote = {
+        id: uuid(),
+        title: "Untitled Note",
+        body: "",
+        lastModified: Date.now(),
+        images: [], // Initialize images array
+      };
+  
+      setNotes([newNote, ...notes]);
+      setActiveNote(newNote.id);
+    }
   };
 
   const onDeleteNote = (noteId) => {
